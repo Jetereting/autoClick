@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/Jetereting/bmob"
 	"github.com/Jetereting/go_util"
 	"github.com/go-vgo/robotgo"
 	"os"
@@ -33,9 +34,18 @@ func WriteMouseLeftClickList(q *bool, mousePointList *[]Point, dur int) {
 	}
 }
 func main() {
+	//检查支付
+	if !bmob.IsPay("鼠标自动点击") {
+		fmt.Println("未付费")
+		return
+	}
+
+	//间断时间
 	dur := 500
-	if d := util.NewT(os.Args[1]).ToInt(); d > 12 {
-		dur = d
+	if len(os.Args) > 1 {
+		if d := util.NewT(os.Args[1]).ToInt(); d > 12 {
+			dur = d
+		}
 	}
 
 	if startMsg := robotgo.ShowAlert("提示", "点击确定开始录制3个按键", "确定", "取消"); startMsg == 0 { //确定0，取消1
